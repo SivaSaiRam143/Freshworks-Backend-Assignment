@@ -25,4 +25,4 @@ thread1.sleep()
 thread2=Thread(target=(create or read or delete),args=(key_name,value,timeout))
 thread2.start()
 thread2.sleep()
-#two threads were used here
+#two threads was used here
