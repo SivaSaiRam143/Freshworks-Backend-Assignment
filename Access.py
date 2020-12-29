@@ -1,52 +1,28 @@
-#here are the commands to demonstrate how to access and perform operations on a main file
+import main as datastore 
+# importing the datastore
 
+datastore.create("key1",10)
+#Creating key1 without TTL
 
-#run the MODULE of MAIN FILE and import mainfile as a library 
+datastore.create("key2",20,2400) 
+#creating key2 with TTL
 
-import code as data 
-#importing the main file("code" is the name of the file I have used) as a library 
+datastore.read("key1")
+#value for key1 in the datastore is returned
 
+datastore.read("key2")
+#value for key2 in the datastore is returned and if the TTL expires ERROR will be returned
 
-data.create("hello",25)
-#to create a key with key_name,value given and with no time-to-live property
+datastore.create("key1",50)
+#As the key1 is already present in the datastore error will be returned
+datastore.delete("key1")
+#data for key1 in the datastore will be removed
 
-
-data.create("hi",70,3600) 
-#to create a key with key_name,value given and with time-to-live property value given(number of seconds)
-
-
-data.read("hello")
-#it returns the value of the respective key in Jasonobject format 'key_name:value'
-
-
-data.read("hi")
-#it returns the value of the respective key in Jasonobject format if the TIME-TO-LIVE IS NOT EXPIRED else it returns an ERROR
-
-
-data.create("hello",50)
-#it returns an ERROR since the key_name already exists in the database
-#To overcome this error 
-#either use modify operation to change the value of a key
-#or use delete operation and recreate it
-
-
-data.modify("hello",55)
-#it replaces the initial value of the respective key with new value 
-
- 
-data.delete("hello")
-#it deletes the respective key and its value from the database(memory is also freed)
-
-#we can access these using multiple threads like
-t1=Thread(target=(create or read or delete),args=(key_name,value,timeout)) #as per the operation
-t1.start()
-t1.sleep()
-t2=Thread(target=(create or read or delete),args=(key_name,value,timeout)) #as per the operation
-t2.start()
-t2.sleep()
-#and so on upto tn
-
-#the code also returns other errors like 
-#"invalidkey" if key_length is greater than 32 or key_name contains any numeric,special characters etc.,
-#"key doesnot exist" if key_name was mis-spelt or deleted earlier
-#"File memory limit reached" if file memory exceeds 1GB
+#Code for using multiple threads
+thread1=Thread(target=(create or read or delete),args=(key_name,value,timeout))
+thread1.start()
+thread1.sleep()
+thread2=Thread(target=(create or read or delete),args=(key_name,value,timeout))
+thread2.start()
+thread2.sleep()
+#two threads were used here
